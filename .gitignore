@@ -26,3 +26,5 @@ replay_pid*
 #eclipse
 .project
 .classpath
+
+/bin/
