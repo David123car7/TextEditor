@@ -2,13 +2,21 @@ import DataStructures.GapBuffer;
 
 public class Main {
 	public static void main(String[] args) {
-		GapBuffer gapBuffer = new GapBuffer(100);
+		GapBuffer gapBuffer = new GapBuffer(1000);
 		gapBuffer.LoadFromFile("/home/david123car7/Documents/JavaProjects/TextEditor/src/");
-		gapBuffer.Grow(3);
+		gapBuffer.InsertChar(' ', 2);
+
+
+
+
+
+		//gapBuffer.MoveCursor(3);
+
 
 		//Prints the gap buffer
 	    for(int i = 0; i< gapBuffer.gapBuffer.length; i++) {
-	    	System.out.print(gapBuffer.gapBuffer[i]);
+	    	if(gapBuffer.gapBuffer[i] != '_')
+	    		System.out.print(gapBuffer.gapBuffer[i]);
 	    }
 	}
 }

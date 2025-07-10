@@ -1,1 +1,10 @@
-Olatudobem
+The quick brown fox jumps over the lazy dog. This sentence contains every letter in the English alphabet and is commonly used to test typewriters and fonts. However, in a real-world text editor, you might encounter much longer passages that span multiple lines, contain various punctuation marks, and test the limits of your buffer logic.
+
+Let's see how your gap buffer handles multiple lines:
+- Line one: short and sweet.
+- Line two: a bit longer, maybe with commas, semicolons; and dashes—like this.
+- Line three: with numbers 1234567890 and symbols !@#$%^&*().
+
+If everything works properly, your editor should preserve all of this text, allow smooth cursor movements, and support insertions and deletions at any position. Keep testing!
+
+End of test file.

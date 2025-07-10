@@ -3,9 +3,9 @@ import Files.Files;
 
 public class GapBuffer {
 	public char[] gapBuffer; //public for now just to test
-	private int gapLeft = 0;
+	private int gapLeft = 0; //is also the mouse position
 	public int gapRight = 0; //public for now just to test
-	private int gapSize = 4;
+	final private int gapSize = 4;
 	
 	/**
 	 * Constructs a GapBuffer with a specified maximum character capacity.
@@ -24,7 +24,7 @@ public class GapBuffer {
 	 * 
 	 * @param position The position at which to insert the new gap (the current cursor).
 	 */
-	public void Grow(int position) {
+	private void Grow(int position) {
 		char[] newGapBuffer = new char[gapBuffer.length + gapSize];
 		
 		gapLeft = position;
@@ -47,7 +47,10 @@ public class GapBuffer {
 	 *
 	 * @param position The target position to move the gap.
 	 */
-	public void MoveGapleft(int position) {
+	private void MoveGapLeft(int position) {
+		if(position < 0 || position > gapBuffer.length)
+			return;
+			
 		while(position < gapLeft) {
 			char x = gapBuffer[gapLeft-1];
 			gapBuffer[gapLeft-1] = gapBuffer[gapRight-1];
@@ -62,8 +65,11 @@ public class GapBuffer {
 	 *
 	 * @param position The target position to move the gap.
 	 */
-	public void MoveGapRight(int position) {
-		while(position > gapRight) {
+	private void MoveGapRight(int position) {
+		if(position < 0 || position > gapBuffer.length)
+			return;
+		
+		while(position > gapLeft) {
 			char x = gapBuffer[gapRight];
 			gapBuffer[gapRight] = gapBuffer[gapLeft];
 			gapBuffer[gapLeft] = x;
@@ -71,6 +77,38 @@ public class GapBuffer {
 			gapRight++;
 		}
 	}
+	
+	/**
+	 * Moves the cursor to the right or to the left
+	 *
+	 * @param position The target position to move the cursor.
+	 */
+	public void MoveCursor(int position) {
+		if(position > gapLeft) { 
+			MoveGapRight(position);
+		}
+		else if(position < gapLeft){
+			MoveGapLeft(position);
+		}
+	}
+	
+	/**
+	 * Inserts a character at the specified position in the gap buffer.
+	 * 
+	 *
+	 * @param input The character to insert.
+	 * @param position The position in the buffer where the character should be inserted.
+	 */
+	public void InsertChar(char input, int position) {
+		if(gapLeft == gapRight)
+			Grow(position);
+		
+		if(position != gapLeft) //if the mouse position its different from the position i want to insert the char moves the cursor
+			MoveCursor(position);
+		
+		gapBuffer[position] = input;
+	}
+	 
 	
 	/**
 	 * Loads the contents of the given file into the gap buffer.
