@@ -116,6 +116,6 @@ public class GapBuffer {
 	 * @param filename The path to the file to load.
 	 */
 	public void LoadFromFile(String filename) {
-		gapBuffer = FilesManagment.ReadFile("/home/david123car7/Documents/JavaProjects/TextEditor/src/kazzio.txt", gapBuffer.length);
+		gapBuffer = FilesManagment.ReadFile(filename, gapBuffer.length);
 	}
 }

@@ -1,18 +1,10 @@
 package TextEditor;
-
 import Data.GapBuffer;
-import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-	    System.out.println("Enter max file size: ");
-	    String maxSize = scanner.nextLine();  
-	    System.out.println("Enter file name: ");
-	    String fileName = scanner.nextLine();  
-	    
-		int bufferSize = Integer.parseInt(maxSize);
-		GapBuffer gapBuffer = new GapBuffer(bufferSize);
+		String fileName = args[0];
+		GapBuffer gapBuffer = new GapBuffer(1000);
 		gapBuffer.LoadFromFile(fileName);
 
 		//Prints the gap buffer
@@ -20,13 +12,6 @@ public class Main {
 	    	if(gapBuffer.gapBuffer[i] != '_')
 	    		System.out.print(gapBuffer.gapBuffer[i]);
 	    }
-	    
-        String userInput = scanner.nextLine();
-        
-        if (userInput == "Exit") {
-            return;
-
-        }
 	}
 }
 

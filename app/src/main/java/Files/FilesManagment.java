@@ -19,6 +19,11 @@ public class FilesManagment {
 			FileReader reader = new FileReader(file);
 			int x = 0, y = 0, k = 0;
 			while((k = reader.read()) != -1) { //while it did not reach the end of the file
+				if(x >= size) {
+					char[] newCharArray = new char[charArray.length + size];
+					System.arraycopy(charArray, 0, newCharArray, 0, charArray.length); 
+					charArray = newCharArray;
+				}
 				char c = (char) k; 
 				charArray[x] = c;
 	            x++;
