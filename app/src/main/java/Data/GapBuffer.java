@@ -1,5 +1,5 @@
-package DataStructures;
-import Files.Files;
+package Data;
+import Files.FilesManagment;
 
 public class GapBuffer {
 	public char[] gapBuffer; //public for now just to test
@@ -116,6 +116,6 @@ public class GapBuffer {
 	 * @param filename The path to the file to load.
 	 */
 	public void LoadFromFile(String filename) {
-		gapBuffer = Files.ReadFile("/home/david123car7/Documents/JavaProjects/TextEditor/src/kazzio.txt", gapBuffer.length);
+		gapBuffer = FilesManagment.ReadFile("/home/david123car7/Documents/JavaProjects/TextEditor/src/kazzio.txt", gapBuffer.length);
 	}
 }

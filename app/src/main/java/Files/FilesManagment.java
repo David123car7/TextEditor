@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException; 
 import java.io.FileReader;
 
-public class Files {
+public class FilesManagment {
 	/**
 	 * Reads the contents of a file into a character array of the specified size.
 	 *
