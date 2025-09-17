@@ -125,18 +125,115 @@ public class GapBuffer {
 		if(gapLeft == 0)
 			return 0;
 		
-		char aux = gapBuffer[gapLeft];
-		gapBuffer[gapLeft] = gapBuffer[gapRight];
-		gapBuffer[gapRight] = aux;
+		char aux = gapBuffer[gapLeft-1];
+		gapBuffer[gapLeft-1] = gapBuffer[gapRight-1];
+		gapBuffer[gapRight-1] = aux;
 		gapLeft--;
 		gapRight--;
 		
 		return 1;
 	}
 	
-	public void ShowGapBufferTerminal() {
-		for(int i=0; i<gapBuffer.length;i++) {
-			System.out.print(gapBuffer[i]);
+	/**
+	 * Moves the gap to the left until its left boundary reaches the given position.
+	 *
+	 * @param position the target index where the left side of the gap should move
+	 * @return -1 if the buffer is not initialized,
+	 *          0 if the gap is already at the start (cannot move further),
+	 *          1 if the gap was moved successfully
+	 */
+	public int MoveGapLeft(int position) {
+		if(gapBuffer == null || position > gapBuffer.length)
+			return -1;
+		
+		if(gapLeft == 0)
+			return 0;
+		
+		while(gapLeft > position) {
+			char aux = gapBuffer[gapLeft-1];
+			gapBuffer[gapLeft-1] = gapBuffer[gapRight-1];
+			gapBuffer[gapRight-1] = aux;
+			gapLeft--;
+			gapRight--;
 		}
+
+		return 1;
+	}
+	
+	/**
+	 * Moves the cursor to the given position by shifting the gap.
+	 * If the target position is to the right of the gap, the gap is moved right.
+	 * If the target position is to the left of the gap, the gap is moved left.
+	 *
+	 * @param position the target index for the cursor (gap's left boundary)
+	 * @return -1 if the position is invalid (negative),
+	 *          0 if the cursor is already at the requested position,
+	 *          1 if the cursor was successfully moved
+	 */
+	public int MoveCursor(int position) {
+		if(position < 0)
+			return -1;
+		
+		if(position  == gapLeft)
+			return 0;
+		
+		if(position > gapLeft)
+			MoveGapRight(position);
+		else if(position < gapLeft) {
+			MoveGapLeft(position);
+		}
+		
+		return 1;
+	}
+	
+	/**
+	 * Inserts a character into the gap buffer at the specified position.
+	 *
+	 * @param c        the character to insert
+	 * @param position the position where the character should be inserted
+	 * @return -1 if the position is invalid (negative),
+	 *          1 if the character was successfully inserted
+	 */
+	public int InsertChar(char c, int position) {
+		if(position < 0)
+			return -1;
+		
+		if(gapLeft != position)
+			MoveCursor(position);
+		
+		if(gapLeft == gapRight)
+			Grow(position); //position + 1???
+		
+		gapBuffer[gapLeft] = c;
+		gapLeft++;
+		
+		return 1;
+	}
+	
+	/**
+	 * Prints the contents of the gap buffer to the terminal.
+	 * 
+	 * @param showGap if true, prints the entire buffer including the gap
+	 *                (represented by the placeholder character, e.g., '_').
+	 *                If false, prints only the actual text (ignoring gap chars).
+	 */
+	public void ShowGapBufferTerminal(boolean showGap) {
+		for(int i=0; i<gapBuffer.length;i++) {
+			if(showGap)
+				System.out.print(gapBuffer[i]);
+			else {
+				if(gapBuffer[i] != gapChar)
+					System.out.print(gapBuffer[i]);
+			}
+		}
+	}
+	
+	/**
+	 * Prints debugging information about the gap, showing the current
+	 * positions of gapLeft and gapRight in the buffer.
+	 */
+	public void ShowGapInfoTerminal() {
+		System.out.print(" GapLeft: " + gapLeft);
+		System.out.print(" GapRight: " + gapRight);
 	}
 }
