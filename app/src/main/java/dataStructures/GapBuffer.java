@@ -1,5 +1,8 @@
 package dataStructures;
 
+import org.jline.terminal.*;
+
+
 public class GapBuffer {
 	public char[] gapBuffer;
 	private int gapLeft; //position of the left gap also the cursor
@@ -202,7 +205,7 @@ public class GapBuffer {
 			MoveCursor(position);
 		
 		if(gapLeft == gapRight)
-			Grow(position); //position + 1???
+			Grow(position-1); //position + 1???
 		
 		gapBuffer[gapLeft] = c;
 		gapLeft++;
@@ -211,29 +214,71 @@ public class GapBuffer {
 	}
 	
 	/**
-	 * Prints the contents of the gap buffer to the terminal.
-	 * 
-	 * @param showGap if true, prints the entire buffer including the gap
-	 *                (represented by the placeholder character, e.g., '_').
-	 *                If false, prints only the actual text (ignoring gap chars).
+	 * Inserts a character into the gap buffer at the cursor position
+	 *
+	 * @param c        the character to insert
+	 * @return -1 if the c is invalid (negative),
+	 *          1 if the character was successfully inserted
 	 */
-	public void ShowGapBufferTerminal(boolean showGap) {
+	public int InsertChar(char c) {
+		if(gapLeft < 0)
+			return -1;
+		
+		if(gapLeft == gapRight)
+			Grow(gapLeft-1);
+		
+		gapBuffer[gapLeft] = c;
+		gapLeft++;
+		
+		return 1;
+	}
+	
+	/**
+	 * Prints the contents of the gap buffer to the provided terminal.
+	 *
+	 * @param terminal the JLine Terminal to print the text to
+	 * @param showGap  if true, prints the entire buffer including the gap
+	 *                 (represented by the placeholder character, e.g., '_').
+	 *                 If false, prints only the actual text, ignoring the gap characters.
+	 */
+	public void ShowGapBufferTerminal(Terminal terminal) {
 		for(int i=0; i<gapBuffer.length;i++) {
-			if(showGap)
-				System.out.print(gapBuffer[i]);
+		    terminal.writer().print(gapBuffer[i]); 
+		    terminal.writer().flush();			
+		}
+	}
+	
+	/**
+	 * Prints the contents of the gap buffer to the provided terminal.
+	 *
+	 * @param terminal the JLine Terminal to print the text to
+	 * @param showGap  if true, prints the entire buffer including the gap
+	 *                 (represented by the placeholder character, e.g., '_').
+	 *                 If false, prints only the actual text, ignoring the gap characters.
+	 */
+	public void ShowGapBufferTerminalDev(Terminal terminal, boolean showGap) {
+		for(int i=0; i<gapBuffer.length;i++) {
+			if(showGap) {
+                terminal.writer().print(gapBuffer[i]);
+                terminal.writer().flush();
+			}
 			else {
-				if(gapBuffer[i] != gapChar)
-					System.out.print(gapBuffer[i]);
+				if(gapBuffer[i] != gapChar) {
+	                terminal.writer().print(gapBuffer[i]); 
+	                terminal.writer().flush();
+				}
 			}
 		}
 	}
 	
 	/**
-	 * Prints debugging information about the gap, showing the current
-	 * positions of gapLeft and gapRight in the buffer.
+	 * Prints debugging information about the gap buffer to the provided terminal.
+	 * Displays the current positions of the gap boundaries: `gapLeft` and `gapRight`.
+	 *
+	 * @param terminal the JLine Terminal to print the gap information to
 	 */
-	public void ShowGapInfoTerminal() {
-		System.out.print(" GapLeft: " + gapLeft);
-		System.out.print(" GapRight: " + gapRight);
+	public void ShowGapInfoTerminal(Terminal terminal) {
+        terminal.writer().print(" GapLeft: " + gapLeft);
+        terminal.writer().print(" GapRight: " + gapRight);
 	}
 }

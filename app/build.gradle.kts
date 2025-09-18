@@ -8,6 +8,9 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+
 }
 
 repositories {
@@ -21,6 +24,11 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+
+    implementation("org.jline:jline-terminal:3.30.6")
+    implementation("org.jline:jline-reader:3.30.6")
+    implementation("org.fusesource.jansi:jansi:2.4.0")
+    implementation("net.java.dev.jna:jna:5.13.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
