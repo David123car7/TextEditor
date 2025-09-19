@@ -20,6 +20,7 @@ public class GapBuffer {
 		gapBuffer = new char[lenght];
 		gapLeft = 0;
 		gapRight = 0;
+		gapLeftStore = Character.MIN_VALUE;
 		gapChar = '_';
 		this.gapSize = gapSize;
 	}
@@ -240,18 +241,21 @@ public class GapBuffer {
 	}
 	
 	/**
-	 * Prints the contents of the gap buffer to the provided terminal.
-	 *
-	 * @param terminal the JLine Terminal to print the text to
-	 * @param showGap  if true, prints the entire buffer including the gap
-	 *                 (represented by the placeholder character, e.g., '_').
-	 *                 If false, prints only the actual text, ignoring the gap characters.
+	 * Ensures that the gap has available space for insertion.
+	 * @return 1 if the buffer was grown, 0 if no growth was necessary
 	 */
-	public void ShowGapBufferTerminal(Terminal terminal) {
-		for(int i=0; i<gapBuffer.length;i++) {
-		    terminal.writer().print(gapBuffer[i]); 
-		    terminal.writer().flush();			
+	public int HandleGrow() {
+		if(gapLeft == gapRight) {
+			if(gapLeft == 0) {
+				Grow(0);
+				return 1;
+			}
+			else {
+				Grow(gapLeft);
+				return 1;
+			}
 		}
+		return 0;
 	}
 	
 	/**
@@ -262,18 +266,30 @@ public class GapBuffer {
 	 *                 (represented by the placeholder character, e.g., '_').
 	 *                 If false, prints only the actual text, ignoring the gap characters.
 	 */
-	public void ShowGapBufferTerminalDev(Terminal terminal, boolean showGap) {
+	public void ShowGapBufferTerminal(Terminal terminal) {
+		int x = 0;
 		for(int i=0; i<gapBuffer.length;i++) {
-			if(showGap) {
+			if(gapBuffer[i] == '_') {
+				if(x == 0)
+					x++;
+				else
+					continue;
+			}
+
+		    terminal.writer().print(gapBuffer[i]); 
+		    terminal.writer().flush();			
+		}
+	}
+	
+	/**
+	 * Prints the contents of the gap buffer to the provided terminal including all gaps of the gapBuffer.
+	 *
+	 * @param terminal the JLine Terminal to print the text to
+	 */
+	public void ShowGapBufferTerminalDev(Terminal terminal) {
+		for(int i=0; i<gapBuffer.length;i++) {
                 terminal.writer().print(gapBuffer[i]);
                 terminal.writer().flush();
-			}
-			else {
-				if(gapBuffer[i] != gapChar) {
-	                terminal.writer().print(gapBuffer[i]); 
-	                terminal.writer().flush();
-				}
-			}
 		}
 	}
 	
