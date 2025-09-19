@@ -224,8 +224,14 @@ public class GapBuffer {
 		if(gapLeft < 0)
 			return -1;
 		
-		if(gapLeft == gapRight)
-			Grow(gapLeft-1);
+		if(gapLeft == gapRight) {
+			if(gapLeft == 0) {
+				Grow(0);
+			}
+			else {
+				Grow(gapLeft-1);
+			}
+		}
 		
 		gapBuffer[gapLeft] = c;
 		gapLeft++;
@@ -280,5 +286,6 @@ public class GapBuffer {
 	public void ShowGapInfoTerminal(Terminal terminal) {
         terminal.writer().print(" GapLeft: " + gapLeft);
         terminal.writer().print(" GapRight: " + gapRight);
+        terminal.writer().flush();
 	}
 }

@@ -10,7 +10,6 @@ public class App {
 
         GapBuffer gapBuffer = new GapBuffer(1000, 4);
         gapBuffer.SetGapBuffer(Files.ReadFile("/home/david123car7/Documents/JavaProjects/TextEditor/app/text.txt", 1000));
-        //gapBuffer.Grow(0);
 
         try {
         	Terminal terminal = TerminalBuilder.builder()
@@ -45,8 +44,12 @@ public class App {
                         int next2 = reader.read();
                         if (next2 == 68) { // left
                             gapBuffer.MoveGapLeft();
+                        	gapBuffer.ShowGapInfoTerminal(terminal);
+
                         } else if (next2 == 67) { // right
                             gapBuffer.MoveGapRight();
+                        	gapBuffer.ShowGapInfoTerminal(terminal);
+
                         }
                     }
                 } 
