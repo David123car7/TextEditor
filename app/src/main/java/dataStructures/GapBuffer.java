@@ -20,7 +20,6 @@ public class GapBuffer {
 		gapBuffer = new char[lenght];
 		gapLeft = 0;
 		gapRight = 0;
-		gapLeftStore = Character.MIN_VALUE;
 		gapChar = '_';
 		this.gapSize = gapSize;
 	}
@@ -236,6 +235,30 @@ public class GapBuffer {
 		
 		gapBuffer[gapLeft] = c;
 		gapLeft++;
+		
+		return 1;
+	}
+	
+    /**
+     * Deletes the character immediately before the current cursor position
+     *
+     *
+     * @return -1 if the gap is invalid,
+     *          0 if no character was deleted,
+     *          1 if a character was successfully deleted.
+     */
+	public int DeleteChar() {
+		if(gapLeft < 0)
+			return -1;
+		
+		if(gapLeft == 0)
+			return 0;
+		
+		for(int i=gapLeft; i<gapBuffer.length-gapLeft; i++) {
+			gapBuffer[i-1] = gapBuffer[i];
+		}
+		gapLeft--;
+		gapRight--;
 		
 		return 1;
 	}

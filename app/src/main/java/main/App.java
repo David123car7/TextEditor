@@ -9,7 +9,7 @@ public class App {
     public static void main(String[] args) {
 
         GapBuffer gapBuffer = new GapBuffer(1000, 10);
-        gapBuffer.SetGapBuffer(Files.ReadFile("/home/david123car7/Documents/JavaProjects/TextEditor/app/text.txt", 1000));
+        gapBuffer.SetGapBuffer(Files.ReadFile(args[0], 1000));
 
         try {
             Terminal terminal = TerminalBuilder.builder()
@@ -25,7 +25,7 @@ public class App {
             //terminal.writer().print("\033[H\033[2J"); // clear screen
             //terminal.writer().flush();
 
-            terminal.writer().println("Text editor made by CrZ. Press 'q' to quit.");
+            terminal.writer().println("Text editor made by CrZ. Press 'CTRL+Q' to quit.");
             gapBuffer.ShowGapBufferTerminal(terminal);
             terminal.writer().flush();
 
@@ -37,24 +37,31 @@ public class App {
 
 
                 if (ch == -1) break; // EOF
-                else if (ch == 'q') {
-                    terminal.writer().println("Exiting raw mode.");
+                else if (ch == 17) { //CTRL+Q
+                    terminal.writer().println("Exiting Text Editor");
                     terminal.flush();
                     break;
-                } 
+                }
+                else if(ch == 8) { //CTRL+H
+                	terminal.writer().println("Text Editor Short-Keys");
+                	terminal.writer().println("- Close Text Editor --> CTRL+Q");
+                	terminal.writer().println("- Save File --> CTRL+S");
+                    terminal.flush();
+                }
                 else if (ch == 27) { // ESC
                     int next1 = reader.read();
                     if (next1 == 91) { // '['
                         int next2 = reader.read();
                         if (next2 == 68) { // left
                             gapBuffer.MoveGapLeft();
-
                         } else if (next2 == 67) { // right
                             gapBuffer.MoveGapRight();
-
                         }
                     }
                 } 
+                else if (ch == 127 || ch == 8) { // Backspace
+                    gapBuffer.DeleteChar();
+                }
                 else if (!Character.isISOControl(c)) {
                     gapBuffer.InsertChar(c);
                 }
